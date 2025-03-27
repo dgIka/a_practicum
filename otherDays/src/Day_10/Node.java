@@ -1,5 +1,9 @@
 package Day_10;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class Node {
     private Node rightChild;
     private Node leftChild;
@@ -10,6 +14,21 @@ public class Node {
         } else return false;
     }
 
+    private static void getOrderValues(Node node, List<Integer> list) {
+        if (node == null) return;
+        getOrderValues(node.getLeftChild(), list);
+        list.add(node.getValue());
+        getOrderValues(node.getRightChild(), list);
+    }
+
+
+
+
+    public List<Integer> getAllValues() {
+        List<Integer> list = new ArrayList<>();
+        getOrderValues(this, list);
+        return list;
+    }
     public void add(int a, Node root) {
         if (this.compareTo(a,root)) {
             if (root.getRightChild() == null) {
