@@ -12,7 +12,7 @@ public class Player {
         return this.field;
     }
 
-    public void setField(Field field) {
-        this.field = field;
+    public void setField(String[][] field) {
+        this.field.setField(field);
     }
 }
