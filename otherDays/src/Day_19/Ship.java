@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 public class Ship {
-    private String coordinates;
     public static void oneDeck (Player player, BufferedReader reader) throws IOException {
         String[][] tempField = player.getField().getField();
         System.out.println("Введите координаты для однопалубного корябля");
@@ -48,32 +47,35 @@ public class Ship {
             System.out.println("Введите координаты для четырехпаллубного корабля");
         }
         for (int f = 0; f < countDeck; f++) {
-            if (f == 0) {
-                    System.out.println("Палуба " + (f + 1));
-                }
-                System.out.println("Сначала X");
-                int tempX = Integer.parseInt(reader.readLine());
-                System.out.println("Теперь Y");
-                int tempY = Integer.parseInt(reader.readLine());
-                addDeck(tempField, tempX, tempY);
-                cX[f] = tempX;
-                cY[f] = tempY;
-
+            System.out.println("Палуба " + (f + 1));
+            System.out.println("Введите X");
+            int tempX = Integer.parseInt(reader.readLine());
+            System.out.println("Введите Y");
+            int tempY = Integer.parseInt(reader.readLine());
+            if(checkCell(tempField, tempX, tempY)) {
+                tempField[tempX][tempY] = Cell.SHIP;
+            } else {
+                System.out.println("Клетка недоступна. Введите другие координаты.");
+                f--;
+                continue;
+            }
+            cX[f] = tempX;
+            cY[f] = tempY;
         }
-        addOreols(tempField, cX, cY);
-        //проверить работу создания ореолов, добавить в метод с ореолами добавление координат ореолов в поле
-        //переделать методы из void может быть...
-        //добавить добавление следующих палуб
-        player.setField(tempField);
+        if(isShipValid(cX, cY)) {
+            addOreols(tempField, cX, cY);
+            player.setField(tempField);
+        } else System.out.println("Такой корабль создать нельзя");
+
+        //Добавить цикл проверки соседних палуб 
+
 
     }
-    private static void addDeck (String[][] field, int x, int y) { //вспомогательный метод для добавления 1 палубы и помметки соседей
-        while (true) {
+    private static boolean checkCell (String[][] field, int x, int y) {
             if (field[x][y].equals(Cell.EMPTY)) {
-                field[x][y] = Cell.SHIP;
-                 break;
-            } else System.out.println("Здесь создавать корабль нельзя.");
-        }
+                return true;
+            } else return false;
+
     }
     private static void addOreols (String[][] field, int[] x, int[] y){
         for (int k = 0; k < x.length; k++) {
@@ -90,5 +92,33 @@ public class Ship {
 
             }
         }
+    }
+    private static boolean isShipValid(int[] x, int[] y) { //проверка валидности формы кораблей
+        if (x.length != y.length) return false;
+        if (x.length == 1) return true;
+        boolean isHorizontal = isLine(y);
+        boolean isVertical = isLine(x);
+        if (!isVertical && !isHorizontal) {
+            return false;
+        }
+        if (isHorizontal) {
+            for (int i = 1; i < x.length; i++) {
+                if (Math.abs(x[i] - x[i - 1]) != 1) return false; // Проверка соседства по X
+            }
+        } else {
+            for (int i = 1; i < y.length; i++) {
+                if (Math.abs(y[i] - y[i - 1]) != 1) return false; // Проверка соседства по Y
+            }
+        }
+        return true;
+    }
+
+    private static boolean isLine(int[] length) { //проверка лежат ли на одной линии
+        for (int i = 1; i < length.length; i++) {
+            if (length[i] != length[0] ) {
+                return false;
+            }
+        }
+        return true;
     }
 }
