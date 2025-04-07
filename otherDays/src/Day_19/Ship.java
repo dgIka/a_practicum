@@ -75,7 +75,7 @@ public class Ship {
             } else if (countDeck == 2) {
                 player.setTwoDeck(player.getTwoDeck() + 1);
             } else {player.setOneDeck(player.getOneDeck() + 1);}
-            player.setShips(player.getShips() + 1);
+            player.setShips(player.getShips() + countDeck);
 
         } else System.out.println("Такой корабль создать нельзя");
 

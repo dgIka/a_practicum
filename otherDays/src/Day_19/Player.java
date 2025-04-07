@@ -17,6 +17,7 @@ public class Player {
         this.field = new Field();
         this.attackField = new Field();
         this.field.fillNewField();
+        this.attackField.fillNewField();
     }
 
     public boolean attack(Player target, BufferedReader reader) throws IOException {
@@ -28,15 +29,19 @@ public class Player {
                 if (target.getField().getField()[tempX][tempY].equals(Cell.SHIP)) {
                     System.out.println("Попал");
                     tempAttackField[tempX][tempY] = Cell.HIT;
+                    target.getField().getField()[tempX][tempY] = Cell.HIT;
+                    target.setShips(target.getShips() - 1);
                     return true;
                 } else {
                     System.out.println("Промах");
                     tempAttackField[tempX][tempY] = Cell.MISS;
+                    target.getField().getField()[tempX][tempY] = Cell.MISS;
                     return false;
                 }
 
 
     }
+
 
     public Field getField() {
         return this.field;
