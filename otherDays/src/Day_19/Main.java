@@ -6,13 +6,7 @@ import java.io.InputStreamReader;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        Player player1 = new Player();
-        player1.getField().printField();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-//        Ship.oneDeck(player1, reader);
-//        player1.getField().printField();
-        Ship.multipleDeck(player1, reader, 3);
-        player1.getField().printField();
-
+        Game game = new Game();
+        game.startGame();
     }
 }

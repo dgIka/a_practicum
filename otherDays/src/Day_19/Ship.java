@@ -53,21 +53,33 @@ public class Ship {
             System.out.println("Введите Y");
             int tempY = Integer.parseInt(reader.readLine());
             if(checkCell(tempField, tempX, tempY)) {
-                tempField[tempX][tempY] = Cell.SHIP;
+                cX[f] = tempX;
+                cY[f] = tempY;
+//                tempField[tempX][tempY] = Cell.SHIP;
             } else {
                 System.out.println("Клетка недоступна. Введите другие координаты.");
                 f--;
                 continue;
             }
-            cX[f] = tempX;
-            cY[f] = tempY;
+
         }
         if(isShipValid(cX, cY)) {
+            for (int i = 0; i < cX.length; i++) {
+                tempField[cX[i]][cY[i]] = Cell.SHIP;
+            }
             addOreols(tempField, cX, cY);
             player.setField(tempField);
+            if (countDeck == 4) player.setFourDeck(player.getFourDeck() + 1);
+            else if (countDeck == 3) {
+                player.setThreeDeck(player.getThreeDeck() + 1);
+            } else if (countDeck == 2) {
+                player.setTwoDeck(player.getTwoDeck() + 1);
+            } else {player.setOneDeck(player.getOneDeck() + 1);}
+            player.setShips(player.getShips() + 1);
+
         } else System.out.println("Такой корабль создать нельзя");
 
-        //Добавить цикл проверки соседних палуб 
+        //Добавить цикл проверки соседних палуб
 
 
     }
